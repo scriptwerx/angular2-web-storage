@@ -4,6 +4,12 @@ Provides a key-value (string-object) storage, that is backed by localStorage or 
 
 Objects put or retrieved from this storage are automatically serialized or deserialized.
 
+## Installation
+
+Node Package Manager:
+
+    npm install --save-dev @scriptwerx/web-storage
+
 ## Dependencies
 
 @scriptwerx/web-storage depends on [Angular 2][] and is tested with version 2.1.0.
@@ -12,7 +18,7 @@ Objects put or retrieved from this storage are automatically serialized or deser
 
 @scriptwerx/web-storage will function correctly within all browsers that support [Web Storage][].
 
-For browsers with Web Storage disabled or in private browsing mode; a simple session Object fallback is used - **please be aware of the limitations in this scenario**.
+For browsers with Web Storage disabled or in private browsing mode; a simple in-session Object fallback is used - **please be aware of the limitations in this scenario**.
 
 ---
 

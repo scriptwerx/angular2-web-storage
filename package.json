@@ -1,0 +1,40 @@
+{
+    "author": "Paul Massey, paul.massey@scriptwerx.io",
+	"organisation": "Scriptwerx",
+    "name": "@scriptwerx/web-storage",
+    "description": "localStorage and sessionStorage for use in your Angular 2 applications.",
+    "version": "0.0.1",
+    "copyright": "Scriptwerx 2016",
+    "license": "MIT",
+    "homepage": "http://www.scriptwerx.io",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/scriptwerx/angular2-web-storage.git"
+    },
+    "keywords": [
+		"Angular 2",
+		"Angular",
+		"Angular 2 Session Storage",
+		"Angular 2 Local Storage",
+		"sessionStorage",
+		"localStorage",
+		"Angular 2 Storage",
+		"Session Storage",
+		"Local Storage",
+		"TypeScript",
+		"Component",
+		"Components",
+		"Scriptwerx",
+        "swx",
+		"Genoveus"
+	],
+    "scripts": {
+
+    },
+    "dependencies": {
+
+    },
+    "devDependencies": {
+      "@angular/core": "2.1.0"
+    }
+}

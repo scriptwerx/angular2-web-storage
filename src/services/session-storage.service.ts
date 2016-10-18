@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 // Service
 import { WebStorageService } from './web-storage.service';
 
-@Injectable
+@Injectable()
 export class SessionStorageService extends WebStorageService {
 
     constructor() {

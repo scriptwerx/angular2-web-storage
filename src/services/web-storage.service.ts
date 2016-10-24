@@ -7,11 +7,11 @@ export class WebStorageService {
         // Empty
     }
 
-    public get(key: string, value: any): void {
+    public put(key: string, value: any): void {
         return WebStorageHelper.put(this.type, key, value);
     }
 
-    public put(key: string): any {
+    public get(key: string): any {
         return WebStorageHelper.get(this.type, key);
     }
 

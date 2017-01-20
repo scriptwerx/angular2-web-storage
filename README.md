@@ -12,7 +12,7 @@ Node Package Manager:
 
 ## Dependencies
 
-@scriptwerx/web-storage depends on [Angular 2][] and is tested with version 2.1.0.
+@scriptwerx/web-storage depends on [Angular 2][] and is tested with version 2.4.4.
 
 ## Supported Browsers
 

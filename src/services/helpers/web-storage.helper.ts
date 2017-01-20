@@ -11,11 +11,21 @@ export type storageType = 'session' | 'local';
 
 export class WebStorageHelper {
 
-    static STORAGE_CACHE = { local: {}, session: {} };
-    static STORAGE_ACTIVE = { local: void 0, session: void 0 };
-    static ONE_DAY = 24 * 60 * 60 * 1000;
+    private static STORAGE_CACHE = { local: {}, session: {} };
+    private static IS_STORAGE_ACTIVE = { local: void 0, session: void 0 };
+    private static readonly ONE_DAY = 24 * 60 * 60 * 1000;
 
-    static get(type: storageType, key: string) {
+    private static crypto: any;
+    private static _key: string;
+
+    /**
+     *
+     * @param type
+     * @param key
+     * @param decrypt
+     * @returns {any}
+     */
+    static get(type: storageType, key: string, decrypt: boolean) {
 
         let item;
 
@@ -29,22 +39,36 @@ export class WebStorageHelper {
             return void 0;
         }
 
+        if (this.isWebCryptoAvailable && decrypt) {
+            // @TODO: Decrypt data here
+        }
+
         if (item.expires && item.expires < new Date().getTime()) {
             this.remove(type, key);
             return void 0;
         }
 
-        this.STORAGE_CACHE[type][key] = item;
-
         return item.data;
     }
 
-    static put = function (type, key, value) {
+    /**
+     *
+     * @param type
+     * @param key
+     * @param value
+     * @param encrypt
+     * @returns {any}
+     */
+    static put = function (type, key, value, encrypt: boolean) {
 
         let dataToStore = { data: value, expires: void 0 };
 
         if (arguments.length > 2 && parseInt(arguments[2], 10)) {
             dataToStore.expires = new Date().getTime() + (arguments[2] * this.ONE_DAY);
+        }
+
+        if (this.isWebCryptoAvailable && encrypt) {
+            // @TODO: Encrypt data here
         }
 
         this.STORAGE_CACHE[type][key] = dataToStore;
@@ -54,6 +78,11 @@ export class WebStorageHelper {
         return value;
     };
 
+    /**
+     *
+     * @param type
+     * @param key
+     */
     static remove(type: storageType, key: string) {
         this.put(type, key, void 0);
         this.getStorage(type).removeItem(Constants.STORAGE_PREFIX + key);
@@ -62,31 +91,70 @@ export class WebStorageHelper {
         delete this.STORAGE_CACHE[type][key];
     }
 
+    /**
+     *
+     * @param type
+     */
     static empty = function (type: storageType) {
         this.getStorage(type).clear();
         this.STORAGE_CACHE[type] = {};
     };
 
-    static getFromCache(type: storageType, key: string) {
+    /**
+     *
+     * @param type
+     * @param key
+     * @returns {any}
+     */
+    private static getFromCache(type: storageType, key: string) {
         return this.STORAGE_CACHE[type][key] || void 0;
     }
 
-    static getStorage(type: storageType): IWebStorage {
+    /**
+     *
+     * @param type
+     * @returns {IWebStorage}
+     */
+    private static getStorage(type: storageType): IWebStorage {
+        type = type || 'session';
         return this.isStorageAvailable(type) ? this.getWebStorage(type) : TempStorage.getStorage(type);
     }
 
-    static getWebStorage(type: storageType): IWebStorage {
+    /**
+     *
+     * @param type
+     * @returns {Storage}
+     */
+    private static getWebStorage(type: storageType): IWebStorage {
         return type === 'session' ? sessionStorage : localStorage;
     }
 
-    static isStorageAvailable(type: storageType) {
+    /**
+     *
+     */
+    private static generateKey() {
+        this.crypto.subtle.generateKey({ name: "AES-CTR", length: 128, }, false, ["encrypt", "decrypt"])
+            .then(function (key) {
+                this._key = key;
+            })
+            .catch(function (err) {
+                console['error']('Error generating key:', err);
+            });
+    }
 
-        if (typeof this.STORAGE_ACTIVE[type] === 'boolean') {
-            return this.STORAGE_ACTIVE[type];
+    /**
+     *
+     * @param type
+     * @returns {boolean}
+     */
+    private static isStorageAvailable(type: storageType): boolean {
+
+        if (typeof this.IS_STORAGE_ACTIVE[type] === 'boolean') {
+            return this.IS_STORAGE_ACTIVE[type];
         }
 
         let isStorageAvailable = true,
-            webStorage = type === 'local' ? localStorage : sessionStorage;
+            webStorage = type === 'session' ?  sessionStorage : localStorage;
 
         try {
             let key = 'swxTest_' + Math.round(Math.random() * 1e7);
@@ -97,7 +165,16 @@ export class WebStorageHelper {
             isStorageAvailable = false;
         }
 
-        return this.STORAGE_ACTIVE[type] = isStorageAvailable;
+        return this.IS_STORAGE_ACTIVE[type] = isStorageAvailable;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    private static get isWebCryptoAvailable() {
+        this.crypto = window.crypto || window['msCrypto'];
+        return !!this.crypto && !!this.crypto.subtle;
     }
 
 }

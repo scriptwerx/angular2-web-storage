@@ -25,7 +25,7 @@ export class WebStorageHelper {
      * @param decrypt
      * @returns {any}
      */
-    static get(type: storageType, key: string, decrypt: boolean) {
+    static get(type: storageType, key: string, decrypt?: boolean) {
 
         let item;
 
@@ -59,7 +59,7 @@ export class WebStorageHelper {
      * @param encrypt
      * @returns {any}
      */
-    static put = function (type, key, value, encrypt: boolean) {
+    static put = function (type, key, value, encrypt?: boolean) {
 
         let dataToStore = { data: value, expires: void 0 };
 

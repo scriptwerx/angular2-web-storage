@@ -3,7 +3,7 @@
 	"organisation": "Scriptwerx",
     "name": "@scriptwerx/web-storage",
     "description": "localStorage and sessionStorage for use in your Angular 2 applications.",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "copyright": "Scriptwerx 2016",
     "license": "MIT",
     "homepage": "http://www.scriptwerx.io",

@@ -4,7 +4,7 @@ export class TempStorage {
 
     static getStorage (type) {
         return {
-            checkErrors() {
+            checkErrors() { // @FIXME: iOS fix - why?
               if (!this.TMP_STORAGE_CACHE) {
                   this.TMP_STORAGE_CACHE = { local: {}, session: {} };
               }

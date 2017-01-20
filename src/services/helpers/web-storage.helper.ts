@@ -28,6 +28,7 @@ export class WebStorageHelper {
     static get(type: storageType, key: string, decrypt?: boolean) {
 
         let item;
+        type = type ? type : 'session'; // @FIXME: iOS fix - why?
 
         if (this.getFromCache(type, key)) {
             item = this.getFromCache(type, key);

@@ -33,7 +33,8 @@ export class WebStorageHelper {
         if (this.getFromCache(type, key)) {
             item = this.getFromCache(type, key);
         } else {
-            item = JSON.parse(this.getStorage(type).getItem(Constants.STORAGE_PREFIX + key));
+            const tmpData = this.getStorage(type).getItem(Constants.STORAGE_PREFIX + key); // @FIXME: iOS fix - why?
+            item = tmpData ? JSON.parse(tmpData) : void 0;
         }
 
         if (!item) {

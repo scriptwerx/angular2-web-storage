@@ -25,14 +25,16 @@ export class WebStorageHelper {
      * @param decrypt
      * @returns {any}
      */
-    static get(type: storageType, key: string, decrypt: boolean) {
+    static get(type: storageType, key: string, decrypt?: boolean) {
 
         let item;
+        type = type ? type : 'session'; // @FIXME: iOS fix - why?
 
         if (this.getFromCache(type, key)) {
             item = this.getFromCache(type, key);
         } else {
-            item = JSON.parse(this.getStorage(type).getItem(Constants.STORAGE_PREFIX + key));
+            const tmpData = this.getStorage(type).getItem(Constants.STORAGE_PREFIX + key); // @FIXME: iOS fix - why?
+            item = tmpData ? JSON.parse(tmpData) : void 0;
         }
 
         if (!item) {
@@ -59,7 +61,7 @@ export class WebStorageHelper {
      * @param encrypt
      * @returns {any}
      */
-    static put = function (type, key, value, encrypt: boolean) {
+    static put = function (type, key, value, encrypt?: boolean) {
 
         let dataToStore = { data: value, expires: void 0 };
 

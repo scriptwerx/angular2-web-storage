@@ -4,18 +4,28 @@ export class TempStorage {
 
     static getStorage (type) {
         return {
+            checkErrors() { // @FIXME: iOS fix - why?
+              if (!this.TMP_STORAGE_CACHE) {
+                  this.TMP_STORAGE_CACHE = { local: {}, session: {} };
+              }
+              return type ? type : 'session';
+            },
             getItem(key) {
-                return this.TMP_STORAGE_CACHE[type][key] || void 0
+                const _type = this.checkErrors();
+                return this.TMP_STORAGE_CACHE[_type][key] || void 0
             },
             setItem(key, data) {
-                return this.TMP_STORAGE_CACHE[type][key] = data;
+                const _type = this.checkErrors();
+                return this.TMP_STORAGE_CACHE[_type][key] = data;
             },
             removeItem(key) {
-                this.TMP_STORAGE_CACHE[type][key] = void 0;
-                delete this.TMP_STORAGE_CACHE[type][key];
+                const _type = this.checkErrors();
+                this.TMP_STORAGE_CACHE[_type][key] = void 0;
+                delete this.TMP_STORAGE_CACHE[_type][key];
             },
             clear() {
-                this.TMP_STORAGE_CACHE[type] = {};
+                const _type = this.checkErrors();
+                this.TMP_STORAGE_CACHE[_type] = {};
             }
         };
     }

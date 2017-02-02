@@ -1,22 +1,31 @@
 import { Constants } from '../../app.constants';
 import { TempStorage } from './temp-storage.helper';
 
+/**
+ *
+ */
 export interface IWebStorage {
     getItem: (key: string) => string;
     setItem: (key: string, value: string) => void;
     removeItem: (key: string) => void;
 }
 
+/**
+ *
+ */
 export type storageType = 'session' | 'local';
 
+/**
+ *
+ */
 export class WebStorageHelper {
 
+    /**
+     *
+     */
     private static STORAGE_CACHE = { local: {}, session: {} };
     private static IS_STORAGE_ACTIVE = { local: void 0, session: void 0 };
     private static readonly ONE_DAY = 24 * 60 * 60 * 1000;
-
-    private static crypto: any;
-    private static _key: string;
 
     /**
      *
@@ -25,7 +34,7 @@ export class WebStorageHelper {
      * @param decrypt
      * @returns {any}
      */
-    static get(type: storageType, key: string, decrypt?: boolean) {
+    static get(type: storageType, key: string): any {
 
         let item;
         type = type ? type : 'session'; // @FIXME: iOS fix - why?
@@ -41,10 +50,6 @@ export class WebStorageHelper {
             return void 0;
         }
 
-        if (this.isWebCryptoAvailable && decrypt) {
-            // @TODO: Decrypt data here
-        }
-
         if (item.expires && item.expires < new Date().getTime()) {
             this.remove(type, key);
             return void 0;
@@ -58,23 +63,16 @@ export class WebStorageHelper {
      * @param type
      * @param key
      * @param value
-     * @param encrypt
      * @returns {any}
      */
-    static put = function (type, key, value, encrypt?: boolean) {
+    static put = function (type, key, value): any {
 
-        let dataToStore = { data: value, expires: void 0 };
-
-        if (arguments.length > 2 && parseInt(arguments[2], 10)) {
-            dataToStore.expires = new Date().getTime() + (arguments[2] * this.ONE_DAY);
-        }
-
-        if (this.isWebCryptoAvailable && encrypt) {
-            // @TODO: Encrypt data here
-        }
+        const dataToStore = {
+            data: value,
+            expires: arguments.length > 2 && parseInt(arguments[2], 10) ? new Date().getTime() + (arguments[2] * this.ONE_DAY) : void 0
+        };
 
         this.STORAGE_CACHE[type][key] = dataToStore;
-
         this.getStorage(type).setItem(Constants.STORAGE_PREFIX + key, JSON.stringify(dataToStore));
 
         return value;
@@ -108,7 +106,7 @@ export class WebStorageHelper {
      * @param key
      * @returns {any}
      */
-    private static getFromCache(type: storageType, key: string) {
+    private static getFromCache(type: storageType, key: string): any {
         return this.STORAGE_CACHE[type][key] || void 0;
     }
 
@@ -133,19 +131,6 @@ export class WebStorageHelper {
 
     /**
      *
-     */
-    private static generateKey() {
-        this.crypto.subtle.generateKey({ name: "AES-CTR", length: 128, }, false, ["encrypt", "decrypt"])
-            .then(function (key) {
-                this._key = key;
-            })
-            .catch(function (err) {
-                console['error']('Error generating key:', err);
-            });
-    }
-
-    /**
-     *
      * @param type
      * @returns {boolean}
      */
@@ -156,27 +141,17 @@ export class WebStorageHelper {
         }
 
         let isStorageAvailable = true,
-            webStorage = type === 'session' ?  sessionStorage : localStorage;
+            webStorage = type === 'session' ? sessionStorage : localStorage;
 
         try {
             let key = 'swxTest_' + Math.round(Math.random() * 1e7);
             webStorage.setItem(key, 'test');
             webStorage.removeItem(key);
-        }
-        catch (e) {
+        } catch (e) {
             isStorageAvailable = false;
         }
 
         return this.IS_STORAGE_ACTIVE[type] = isStorageAvailable;
-    }
-
-    /**
-     *
-     * @returns {boolean}
-     */
-    private static get isWebCryptoAvailable() {
-        this.crypto = window.crypto || window['msCrypto'];
-        return !!this.crypto && !!this.crypto.subtle;
     }
 
 }

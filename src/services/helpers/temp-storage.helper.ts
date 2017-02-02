@@ -12,7 +12,7 @@ export class TempStorage {
             },
             getItem(key) {
                 const _type = this.checkErrors();
-                return this.TMP_STORAGE_CACHE[_type][key] || void 0
+                return this.TMP_STORAGE_CACHE[_type][key] || void 0;
             },
             setItem(key, data) {
                 const _type = this.checkErrors();

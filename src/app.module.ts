@@ -1,5 +1,5 @@
 // Angular2
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 
 // Services
 import { LocalStorageService, SessionStorageService } from './services';
@@ -8,6 +8,16 @@ import { LocalStorageService, SessionStorageService } from './services';
     providers: [LocalStorageService, SessionStorageService]
 })
 
-export class WebStorage {
-    // Empty
+export class WebStorageModule {
+
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: WebStorageModule,
+            providers: [
+                LocalStorageService,
+                SessionStorageService
+            ]
+        };
+    }
+
 }

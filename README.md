@@ -1,6 +1,8 @@
 # @scriptwerx/web-storage
 
-Provides a key-value (string-object) storage, that is backed by localStorage or sessionStorage with support for expiry (in days).
+Provides a key-value (string-object) storage, that is backed by localStorage or sessionStorage with support for expiry.
+
+**N.B. Expiry is set in days for localStorage and minutes for sessionStorage.**
 
 Objects put or retrieved from this storage are automatically serialized or deserialized.
 
@@ -12,7 +14,7 @@ Node Package Manager:
 
 ## Dependencies
 
-@scriptwerx/web-storage depends on [Angular 2][] and is tested with version 2.4.4.
+@scriptwerx/web-storage depends on [Angular 2][] and is tested with version 2.4.5.
 
 ## Supported Browsers
 

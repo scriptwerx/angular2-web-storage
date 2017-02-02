@@ -140,11 +140,11 @@ export class WebStorageHelper {
             return this.IS_STORAGE_ACTIVE[type];
         }
 
-        let isStorageAvailable = true,
-            webStorage = type === 'session' ? sessionStorage : localStorage;
+        const webStorage = type === 'session' ? sessionStorage : localStorage;
+        let isStorageAvailable = true;
 
         try {
-            let key = 'swxTest_' + Math.round(Math.random() * 1e7);
+            const key = 'swxTest_' + Math.round(Math.random() * 1e7);
             webStorage.setItem(key, 'test');
             webStorage.removeItem(key);
         } catch (e) {

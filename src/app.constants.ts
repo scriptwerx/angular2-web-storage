@@ -1,6 +1,6 @@
 export class Constants {
 
-    private static PREFIX: string = 'swx-';
+    private static PREFIX = 'swx-';
 
     public static get STORAGE_PREFIX(): string {
         return this.PREFIX;

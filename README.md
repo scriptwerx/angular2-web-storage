@@ -22,6 +22,10 @@ Node Package Manager:
 
 For browsers with Web Storage disabled or in private browsing mode; a simple in-session Object fallback is used - **please be aware of the limitations in this scenario**.
 
+Code tested with [Browserstack](https://www.browserstack.com)
+
+[![Browserstack](browserstack.png)](https://www.browserstack.com)
+
 ---
 
 The MIT License (MIT)
